@@ -35,7 +35,7 @@ export default function AiRizzLab() {
                                     <Brain className="h-6 w-6" />
                                 </div>
                                 <div>
-                                    <h2 className="text-3xl font-black text-white">AI Rizz Lab</h2>
+                                    <h2 className="text-3xl font-black text-foreground">AI Rizz Lab</h2>
                                     <p className="text-xs font-bold uppercase tracking-widest text-zinc-500">Precision Attraction Engineering</p>
                                 </div>
                             </div>
@@ -43,7 +43,7 @@ export default function AiRizzLab() {
                             <div className="space-y-10">
                                 {/* Personality Type */}
                                 <div>
-                                    <label className="flex items-center gap-2 text-sm font-bold text-white uppercase tracking-wider mb-4">
+                                    <label className="flex items-center gap-2 text-sm font-bold text-foreground uppercase tracking-wider mb-4">
                                         <Target size={16} className="text-brand-pink" /> Target Personality
                                     </label>
                                     <div className="flex flex-wrap gap-2">
@@ -54,8 +54,8 @@ export default function AiRizzLab() {
                                                 className={cn(
                                                     "px-4 py-2 rounded-xl text-xs font-bold transition-all border",
                                                     selectedType === type
-                                                        ? "bg-white text-black border-white shadow-lg shadow-white/10"
-                                                        : "bg-white/5 border-white/5 text-zinc-500 hover:bg-white/10"
+                                                        ? "bg-foreground text-background border-foreground shadow-lg shadow-foreground/10"
+                                                        : "bg-foreground/5 border-foreground/5 text-zinc-500 hover:bg-foreground/10"
                                                 )}
                                             >
                                                 {type}
@@ -66,12 +66,12 @@ export default function AiRizzLab() {
 
                                 {/* Intensity Slider */}
                                 <div>
-                                    <label className="flex items-center justify-between text-sm font-bold text-white uppercase tracking-wider mb-6">
+                                    <label className="flex items-center justify-between text-sm font-bold text-foreground uppercase tracking-wider mb-6">
                                         <span className="flex items-center gap-2">
                                             <Sliders size={16} className="text-brand-pink" /> Rizz Intensity
                                         </span>
                                         <span className={cn(
-                                            "px-3 py-1 rounded-full text-[10px] text-white",
+                                            "px-3 py-1 rounded-full text-[10px] text-white font-bold",
                                             intensity < 30 ? "bg-emerald-500" : intensity < 70 ? "bg-brand-pink" : "bg-red-600 animate-pulse"
                                         )}>
                                             {intensity < 30 ? "SOFT" : intensity < 70 ? "BOLD" : "NUCLEAR"}
@@ -83,7 +83,7 @@ export default function AiRizzLab() {
                                         max="100"
                                         value={intensity}
                                         onChange={(e) => setIntensity(parseInt(e.target.value))}
-                                        className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-brand-pink"
+                                        className="w-full h-2 bg-foreground/10 rounded-lg appearance-none cursor-pointer accent-brand-pink"
                                     />
                                     <div className="flex justify-between mt-2 text-[10px] font-bold text-zinc-600">
                                         <span>FRIENDLY</span>
@@ -94,13 +94,13 @@ export default function AiRizzLab() {
 
                                 {/* Platform Selection */}
                                 <div>
-                                    <label className="flex items-center gap-2 text-sm font-bold text-white uppercase tracking-wider mb-4">
+                                    <label className="flex items-center gap-2 text-sm font-bold text-foreground uppercase tracking-wider mb-4">
                                         <ShieldCheck size={16} className="text-brand-pink" /> Optimize For
                                     </label>
                                     <select
                                         value={selectedPlatform}
                                         onChange={(e) => setSelectedPlatform(e.target.value)}
-                                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-brand-pink"
+                                        className="w-full bg-foreground/5 border border-foreground/10 rounded-2xl px-6 py-4 text-foreground focus:outline-none focus:ring-2 focus:ring-brand-pink"
                                     >
                                         {platforms.map(p => <option key={p} value={p}>{p}</option>)}
                                     </select>
@@ -109,7 +109,7 @@ export default function AiRizzLab() {
                         </div>
 
                         {/* Right: Lab Output / Visualization */}
-                        <div className="flex-1 flex flex-col items-center justify-center p-8 bg-black/40 rounded-[32px] border border-white/5 min-h-[400px]">
+                        <div className="flex-1 flex flex-col items-center justify-center p-8 bg-foreground/5 rounded-[32px] border border-foreground/5 min-h-[400px]">
                             <motion.div
                                 animate={{ scale: [1, 1.05, 1], opacity: [0.5, 1, 0.5] }}
                                 transition={{ duration: 4, repeat: Infinity }}
@@ -120,7 +120,7 @@ export default function AiRizzLab() {
                             </motion.div>
 
                             <div className="text-center">
-                                <h3 className="text-2xl font-bold text-white mb-2 uppercase tracking-tight">Calibrating...</h3>
+                                <h3 className="text-2xl font-bold text-foreground mb-2 uppercase tracking-tight">Calibrating...</h3>
                                 <p className="text-zinc-500 text-sm max-w-xs mx-auto mb-8">
                                     Combining {selectedType} dynamics with {selectedPlatform} algorithms at {intensity}% intensity.
                                 </p>

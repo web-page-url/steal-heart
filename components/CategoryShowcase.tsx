@@ -80,7 +80,7 @@ const categories: Category[] = [
 
 export default function CategoryShowcase() {
     return (
-        <section id="categories" className="py-24 px-4 bg-gradient-to-b from-transparent to-black/50">
+        <section id="categories" className="py-24 px-4 bg-gradient-to-b from-transparent to-background/50">
             <div className="mx-auto max-w-7xl">
                 <div className="text-center mb-16">
                     <motion.div
@@ -91,7 +91,7 @@ export default function CategoryShowcase() {
                         <Crown className="h-3 w-3 text-brand-gold" />
                         <span className="text-[10px] font-bold uppercase tracking-widest text-brand-gold">Choose Your Weapon</span>
                     </motion.div>
-                    <h2 className="text-4xl md:text-6xl font-black text-white">Master the <span className="text-gradient">Art of Charm.</span></h2>
+                    <h2 className="text-4xl md:text-6xl font-black text-foreground">Master the <span className="text-gradient">Art of Charm.</span></h2>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -116,11 +116,11 @@ export default function CategoryShowcase() {
                                 <cat.icon size={28} />
                             </div>
 
-                            <h3 className="text-2xl font-bold text-white mb-2">{cat.title}</h3>
-                            <p className="text-zinc-500 text-sm mb-6 leading-relaxed">{cat.desc}</p>
+                            <h3 className="text-2xl font-bold text-foreground mb-2">{cat.title}</h3>
+                            <p className="text-text-muted text-sm mb-6 leading-relaxed">{cat.desc}</p>
 
                             <div className="mt-auto">
-                                <div className="p-4 rounded-xl bg-black/40 border border-white/5 italic text-zinc-400 text-xs">
+                                <div className="p-4 rounded-xl bg-foreground/5 border border-foreground/5 italic text-text-muted text-xs">
                                     "{cat.preview}"
                                 </div>
                             </div>

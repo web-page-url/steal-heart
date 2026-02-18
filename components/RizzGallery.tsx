@@ -17,9 +17,9 @@ const images = [
 
 export default function RizzGallery() {
     return (
-        <section className="py-24 px-4 overflow-hidden bg-black/40">
+        <section className="py-24 px-4 overflow-hidden bg-foreground/5">
             <div className="mx-auto max-w-7xl text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
+                <h2 className="text-4xl md:text-5xl font-black text-foreground mb-4">
                     The <span className="text-gradient">Artifacts.</span>
                 </h2>
                 <p className="text-zinc-500 font-medium">Visual proof of stolen hearts.</p>

@@ -53,12 +53,12 @@ export default function RizzGenerator() {
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        className="text-4xl md:text-6xl font-black text-white mb-4"
+                        className="text-4xl md:text-6xl font-black text-foreground mb-4"
                     >
                         Type Their Name. <br />
                         <span className="text-gradient">We Handle The Magic.</span>
                     </motion.h2>
-                    <p className="text-zinc-500 font-medium">Precision-crafted charm for every personality.</p>
+                    <p className="text-text-muted font-medium">Precision-crafted charm for every personality.</p>
                 </div>
 
                 <div className="glass rounded-[40px] p-8 md:p-12 relative overflow-hidden">
@@ -69,7 +69,7 @@ export default function RizzGenerator() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
                         <div className="flex flex-col gap-6">
                             <div>
-                                <label className="block text-sm font-bold text-zinc-400 uppercase tracking-widest mb-3 ml-2">
+                                <label className="block text-sm font-bold text-text-muted uppercase tracking-widest mb-3 ml-2">
                                     Target Name
                                 </label>
                                 <input
@@ -77,12 +77,12 @@ export default function RizzGenerator() {
                                     placeholder="Enter their name..."
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
-                                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-lg text-white placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-brand-pink/50 transition-all"
+                                    className="w-full bg-foreground/5 border border-foreground/10 rounded-2xl px-6 py-4 text-lg text-foreground placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-brand-pink/50 transition-all"
                                 />
                             </div>
 
                             <div>
-                                <label className="block text-sm font-bold text-zinc-400 uppercase tracking-widest mb-3 ml-2">
+                                <label className="block text-sm font-bold text-text-muted uppercase tracking-widest mb-3 ml-2">
                                     Select Vibe
                                 </label>
                                 <div className="grid grid-cols-2 gap-2">
@@ -94,7 +94,7 @@ export default function RizzGenerator() {
                                                 "px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border",
                                                 vibe === v
                                                     ? "bg-brand-pink/20 border-brand-pink text-white shadow-[0_0_15px_rgba(255,105,180,0.2)]"
-                                                    : "bg-white/5 border-white/5 text-zinc-500 hover:bg-white/10"
+                                                    : "bg-foreground/5 border-foreground/5 text-text-muted hover:bg-foreground/10"
                                             )}
                                         >
                                             {v}
@@ -132,7 +132,7 @@ export default function RizzGenerator() {
                                             <Heart className="h-5 w-5 text-white fill-current" />
                                         </div>
 
-                                        <p className="text-2xl md:text-3xl font-bold text-white leading-relaxed italic pr-4">
+                                        <p className="text-2xl md:text-3xl font-bold text-foreground leading-relaxed italic pr-4">
                                             "{generatedLine}"
                                         </p>
 
@@ -143,7 +143,7 @@ export default function RizzGenerator() {
                                             >
                                                 <Copy size={16} /> {copied ? "Copied!" : "Copy"}
                                             </button>
-                                            <button className="flex items-center gap-2 text-sm font-bold text-zinc-400 hover:text-white transition-colors">
+                                            <button className="flex items-center gap-2 text-sm font-bold text-text-muted hover:text-foreground transition-colors">
                                                 <Share2 size={16} /> Share
                                             </button>
                                         </div>

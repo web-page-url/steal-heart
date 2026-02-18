@@ -1,10 +1,11 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-red: #8B0000;
-  --color-brand-purple: #2E1A47;
-  --color-brand-gold: #B76E79;
-  --color-brand-pink: #FF69B4;
+  --color-brand-red: var(--color-red);
+  --color-brand-purple: var(--color-purple);
+  --color-brand-gold: var(--color-gold);
+  --color-brand-pink: var(--color-pink);
+  --color-text-muted: var(--text-muted);
 
   --animate-float: float 6s ease-in-out infinite;
   --animate-pulse-glow: pulse-glow 3s ease-in-out infinite;
@@ -26,21 +27,52 @@
     0%,
     100% {
       opacity: 0.8;
-      filter: drop-shadow(0 0 5px #FF69B4);
+      filter: drop-shadow(0 0 5px var(--color-pink));
     }
 
     50% {
       opacity: 1;
-      filter: drop-shadow(0 0 20px #FF1493);
+      filter: drop-shadow(0 0 20px var(--color-pink-glow));
     }
   }
 }
 
 :root {
+  /* Midnight Theme (Default) */
   --background: #05010a;
   --foreground: #ffffff;
   --glass: rgba(255, 255, 255, 0.05);
   --glass-border: rgba(255, 255, 255, 0.1);
+  --text-muted: #a1a1aa;
+
+  --color-red: #8B0000;
+  --color-purple: #2E1A47;
+  --color-gold: #B76E79;
+  --color-pink: #FF69B4;
+  --color-pink-glow: #FF1493;
+
+  --overlay-opacity: 0.6;
+  --hero-vignette: rgba(0, 0, 0, 0.8);
+}
+
+[data-theme='love'] {
+  /* Pinkish Love Theme - Vibrantly Romantic */
+  --background: #fff0f5;
+  /* Lavender Blush - a soft, warm pinkish white */
+  --foreground: #4a041a;
+  /* Very dark magenta/burgundy for readability */
+  --glass: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 105, 180, 0.2);
+  --text-muted: #8d4a5d;
+
+  --color-red: #ff0054;
+  --color-purple: #ffb3c1;
+  --color-gold: #ff85a1;
+  --color-pink: #ff4d6d;
+  --color-pink-glow: #ff758f;
+
+  --overlay-opacity: 0.1;
+  --hero-vignette: rgba(255, 105, 180, 0.1);
 }
 
 body {
@@ -48,6 +80,7 @@ body {
   color: var(--foreground);
   font-family: var(--font-outfit), var(--font-geist-sans), sans-serif;
   overflow-x: hidden;
+  transition: background 0.5s ease, color 0.5s ease;
 }
 
 ::selection {
@@ -59,15 +92,16 @@ body {
   background: var(--glass);
   backdrop-filter: blur(12px);
   border: 1px solid var(--glass-border);
+  transition: background 0.5s ease, border 0.5s ease;
 }
 
 .text-gradient {
-  background: linear-gradient(to right, #FF69B4, #B76E79, #8B0000);
+  background: linear-gradient(to right, var(--color-pink), var(--color-gold), var(--color-red));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .hero-gradient {
-  background: radial-gradient(circle at center, rgba(139, 0, 0, 0.15) 0%, transparent 70%);
+  background: radial-gradient(circle at center, rgba(255, 105, 180, 0.15) 0%, transparent 70%);
 }

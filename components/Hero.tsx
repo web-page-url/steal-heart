@@ -35,21 +35,24 @@ export default function Hero() {
             className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-4 pt-20"
         >
             {/* Cinematic Background */}
-            <div className="absolute inset-0 bg-[#05010a] z-0">
+            <div className="absolute inset-0 bg-background z-0">
                 {/* Desktop Background */}
                 <img
                     src="/img/steal-heart-8.jpg"
                     alt="Cinematic Background"
-                    className="hidden md:block absolute inset-0 h-full w-full object-cover opacity-60 object-center"
+                    className="hidden md:block absolute inset-0 h-full w-full object-cover opacity-60 object-center mix-blend-luminosity dark:mix-blend-normal"
                 />
                 {/* Mobile Background */}
                 <img
                     src="/img/mobile-hero-img.jpg"
                     alt="Cinematic Background Mobile"
-                    className="block md:hidden absolute inset-0 h-full w-full object-cover opacity-90 object-center"
+                    className="block md:hidden absolute inset-0 h-full w-full object-cover opacity-90 object-center dark:opacity-60"
                 />
-                <div className="absolute inset-0 bg-black/60" />
-                <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-[#05010a]" />
+                <div className="absolute inset-0 bg-background transition-opacity duration-500" style={{ opacity: 'var(--overlay-opacity)' }} />
+                <div
+                    className="absolute inset-0 bg-gradient-to-b transition-all duration-500"
+                    style={{ backgroundImage: `linear-gradient(to bottom, var(--hero-vignette), transparent 50%, var(--background))` }}
+                />
             </div>
 
             {/* Floating Elements (Text) */}
@@ -58,7 +61,7 @@ export default function Hero() {
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="mb-4 md:mb-6 inline-flex items-center gap-2 rounded-full border border-brand-pink/30 bg-black/40 px-5 py-2 backdrop-blur-xl"
+                    className="mb-4 md:mb-6 inline-flex items-center gap-2 rounded-full border border-brand-pink/30 bg-foreground/10 px-5 py-2 backdrop-blur-xl"
                 >
                     <Sparkles className="h-3.5 w-3.5 text-brand-pink" />
                     <span className="text-[10px] md:text-xs font-black uppercase tracking-[0.3em] text-brand-pink">
@@ -67,15 +70,14 @@ export default function Hero() {
                 </motion.div>
 
                 <h1
-                    className="mb-3 md:mb-4 max-w-5xl text-4xl font-black leading-[1.1] tracking-tighter text-white md:text-6xl lg:text-7xl xl:text-8xl"
-                    style={{ textShadow: '0 10px 30px rgba(0,0,0,0.8)' }}
+                    className="mb-3 md:mb-4 max-w-5xl text-4xl font-black leading-[1.1] tracking-tighter text-foreground md:text-6xl lg:text-7xl xl:text-8xl drop-shadow-sm"
                 >
                     Stop Being <span className="text-gradient">Ignored.</span>
                     <br />
                     Start Being <span className="text-gradient">Irresistible.</span>
                 </h1>
 
-                <p className="mx-auto mb-5 md:mb-6 max-w-xl text-base leading-relaxed text-zinc-300 md:text-lg font-medium">
+                <p className="mx-auto mb-5 md:mb-6 max-w-xl text-base leading-relaxed text-text-muted md:text-lg font-medium">
                     AI-generated pick-up lines engineered to spark chemistry,
                     ignite dopamine, and steal hearts effortlessly.
                     The secret weapon of modern charm.

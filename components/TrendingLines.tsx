@@ -12,7 +12,7 @@ const trendingLines = [
 
 export default function TrendingLines() {
     return (
-        <section className="py-24 px-4 bg-black/20">
+        <section className="py-24 px-4 bg-foreground/5">
             <div className="mx-auto max-w-7xl">
                 <div className="flex flex-col md:flex-row items-end justify-between mb-12 gap-6">
                     <div>
@@ -20,9 +20,9 @@ export default function TrendingLines() {
                             <TrendingUp size={20} />
                             <span className="text-xs font-bold uppercase tracking-widest">Live Updates</span>
                         </div>
-                        <h2 className="text-4xl md:text-5xl font-black text-white">Today's <span className="text-gradient">Heartbreakers.</span></h2>
+                        <h2 className="text-4xl md:text-5xl font-black text-foreground">Today's <span className="text-gradient">Heartbreakers.</span></h2>
                     </div>
-                    <p className="text-zinc-500 max-w-xs text-sm font-medium">The most used and successful lines in the RizzVerse today.</p>
+                    <p className="text-text-muted max-w-xs text-sm font-medium">The most used and successful lines in the RizzVerse today.</p>
                 </div>
 
                 <div className="flex overflow-hidden group">
@@ -36,8 +36,8 @@ export default function TrendingLines() {
                                 key={i}
                                 className="inline-block glass rounded-3xl p-6 min-w-[350px] border-white/5"
                             >
-                                <p className="text-xl font-bold text-white mb-6 whitespace-normal">"{line.text}"</p>
-                                <div className="flex items-center gap-6 text-zinc-500">
+                                <p className="text-xl font-bold text-foreground mb-6 whitespace-normal">"{line.text}"</p>
+                                <div className="flex items-center gap-6 text-text-muted">
                                     <span className="flex items-center gap-1.5 text-xs font-bold">
                                         <Heart size={14} className="text-brand-pink fill-current" /> {line.likes}
                                     </span>

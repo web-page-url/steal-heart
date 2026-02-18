@@ -11,7 +11,7 @@ import RizzGallery from "@/components/RizzGallery";
 
 export default function Home() {
   return (
-    <div className="relative min-h-screen bg-[#05010a] text-white font-outfit">
+    <div className="relative min-h-screen bg-background text-foreground font-outfit transition-colors duration-500">
       {/* Cinematic Overlays */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-[0.03]" />

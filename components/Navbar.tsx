@@ -1,9 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Heart, Menu, X } from "lucide-react";
+import { Heart, Menu, X, Sun, Moon, Palette } from "lucide-react";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
+import { useTheme } from "./ThemeProvider";
 
 const navLinks = [
     { name: "Home", href: "#" },
@@ -24,6 +25,8 @@ export default function Navbar() {
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
+
+    const { theme, toggleTheme } = useTheme();
 
     return (
         <nav
@@ -47,7 +50,7 @@ export default function Navbar() {
                         <Heart className="h-6 w-6 fill-current" />
                     </motion.div>
                     <div className="flex flex-col">
-                        <span className="text-xl font-bold tracking-tighter text-white">
+                        <span className="text-xl font-bold tracking-tighter text-foreground">
                             RizzVerse
                         </span>
                         <span className="text-[10px] uppercase tracking-widest text-brand-gold font-medium leading-tight">
@@ -62,14 +65,24 @@ export default function Navbar() {
                         <a
                             key={link.name}
                             href={link.href}
-                            className="text-sm font-medium text-zinc-400 hover:text-white transition-colors capitalize tracking-wide"
+                            className="text-sm font-medium text-zinc-400 hover:text-foreground transition-colors capitalize tracking-wide"
                         >
                             {link.name}
                         </a>
                     ))}
                 </div>
 
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 sm:gap-4">
+                    <motion.button
+                        whileHover={{ scale: 1.1, rotate: 5 }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={toggleTheme}
+                        className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-brand-pink hover:bg-white/20 transition-colors"
+                        title="Switch to Love Mode"
+                    >
+                        {theme === 'midnight' ? <Palette className="h-5 w-5" /> : <Heart className="h-5 w-5 fill-current" />}
+                    </motion.button>
+
                     <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
@@ -79,7 +92,7 @@ export default function Navbar() {
                     </motion.button>
 
                     <button
-                        className="md:hidden text-white"
+                        className="md:hidden text-foreground"
                         onClick={() => setIsOpen(!isOpen)}
                     >
                         {isOpen ? <X /> : <Menu />}

@@ -36,8 +36,8 @@ export default function Pricing() {
         <section id="pricing" className="py-24 px-4 bg-gradient-to-t from-brand-purple/20 to-transparent">
             <div className="mx-auto max-w-7xl">
                 <div className="text-center mb-16">
-                    <h2 className="text-4xl md:text-6xl font-black text-white mb-4">Unlock <span className="text-gradient">God-Level Rizz.</span></h2>
-                    <p className="text-zinc-500 font-medium">Choose your level of attraction.</p>
+                    <h2 className="text-4xl md:text-6xl font-black text-foreground mb-4">Unlock <span className="text-gradient">God-Level Rizz.</span></h2>
+                    <p className="text-text-muted font-medium">Choose your level of attraction.</p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -59,21 +59,21 @@ export default function Pricing() {
                                 <tier.icon size={24} />
                             </div>
 
-                            <h3 className="text-2xl font-bold text-white mb-2">{tier.name}</h3>
+                            <h3 className="text-2xl font-bold text-foreground mb-2">{tier.name}</h3>
                             <div className="flex items-baseline gap-1 mb-8">
-                                <span className="text-4xl font-black text-white">${tier.price}</span>
-                                <span className="text-zinc-500 font-bold uppercase tracking-widest text-[10px]">/month</span>
+                                <span className="text-4xl font-black text-foreground">${tier.price}</span>
+                                <span className="text-text-muted font-bold uppercase tracking-widest text-[10px]">/month</span>
                             </div>
 
                             <ul className="space-y-4 mb-10 flex-grow">
                                 {tier.features.map(feat => (
-                                    <li key={feat} className="flex items-center gap-3 text-zinc-400 text-sm font-medium">
+                                    <li key={feat} className="flex items-center gap-3 text-text-muted text-sm font-medium">
                                         <Check size={16} className="text-brand-pink flex-shrink-0" /> {feat}
                                     </li>
                                 ))}
                             </ul>
 
-                            <button className={`w-full py-4 rounded-2xl font-black text-lg transition-all ${tier.popular ? "bg-white text-black hover:bg-brand-pink hover:text-white" : "bg-white/5 text-white hover:bg-white/10"}`}>
+                            <button className={`w-full py-4 rounded-2xl font-black text-lg transition-all ${tier.popular ? "bg-foreground text-background hover:bg-brand-pink hover:text-white" : "bg-foreground/5 text-foreground hover:bg-foreground/10"}`}>
                                 Get Started
                             </button>
                         </motion.div>

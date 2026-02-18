@@ -1,0 +1,68 @@
+export type RizzVibe =
+    | "Romantic"
+    | "Funny"
+    | "Savage"
+    | "Cute"
+    | "Bollywood"
+    | "Dark Mysterious"
+    | "Luxury Gentleman"
+    | "Soft Girl Energy"
+    | "Shayari Mode";
+
+export interface RizzLine {
+    text: string;
+    author?: string;
+    vibe: RizzVibe;
+}
+
+export const RIZZ_LINES: RizzLine[] = [
+    // Romantic
+    { text: "Are you a magician? Because whenever I look at you, everyone else disappears.", vibe: "Romantic" },
+    { text: "Do you have a map? I keep getting lost in your eyes.", vibe: "Romantic" },
+    { text: "If beauty were time, you’d be an eternity.", vibe: "Romantic" },
+    { text: "Are you made of stardust? Because my universe feels incomplete without you.", vibe: "Romantic" },
+
+    // Funny
+    { text: "Are you made of copper and tellurium? Because you're Cu-Te.", vibe: "Funny" },
+    { text: "Is your name Google? Because you've got everything I've been searching for.", vibe: "Funny" },
+    { text: "If you were a vegetable, you'd be a cute-cumber!", vibe: "Funny" },
+    { text: "Do you have Wi-Fi? Because I'm feeling a connection.", vibe: "Funny" },
+
+    // Savage
+    { text: "If looks could kill, you'd be a weapon of mass destruction.", vibe: "Savage" },
+    { text: "Are you a parking ticket? Because you've got FINE written all over you.", vibe: "Savage" },
+    { text: "I was going to wait for you to talk to me, but I'm too impatient for perfection.", vibe: "Savage" },
+
+    // Cute
+    { text: "Do you have a Band-Aid? Because I just scraped my knee falling for you.", vibe: "Cute" },
+    { text: "I must be a snowflake because I've fallen for you.", vibe: "Cute" },
+    { text: "Are you a camera? Every time I look at you, I smile.", vibe: "Cute" },
+
+    // Bollywood
+    { text: "Itni shiddat se maine tumhe paane ki koshish ki hai, ki har zarre ne mujhe tumse milane ki saazish ki hai.", vibe: "Bollywood" },
+    { text: "Bade bade deshon mein aisi chhoti chhoti baatein hoti rehti hain, Senorita.", vibe: "Bollywood" },
+
+    // Dark Mysterious
+    { text: "I don't believe in shadows, but I'd follow yours anywhere.", vibe: "Dark Mysterious" },
+    { text: "The stars are jealous of the light you hide behind those eyes.", vibe: "Dark Mysterious" },
+
+    // Luxury Gentleman
+    { text: "A vintage wine can't compete with the complexity of your presence.", vibe: "Luxury Gentleman" },
+    { text: "Excellence is a habit, but you seem to be the definition of it.", vibe: "Luxury Gentleman" },
+
+    // Shayari Mode
+    { text: "Tere muskurane ka andaaz kuch aisa hai, jaise sadiyon ki pyas bujh gayi ho.", vibe: "Shayari Mode" },
+    { text: "Log kehte hain mohabbat ek bar hoti hai, par main jab tumhe dekhta hoon, mujhe har bar hoti hai.", vibe: "Shayari Mode" }
+];
+
+export const VIBE_COLORS: Record<RizzVibe, string> = {
+    Romantic: "from-rose-500 to-pink-600",
+    Funny: "from-yellow-400 to-orange-500",
+    Savage: "from-purple-600 to-indigo-700",
+    Cute: "from-pink-300 to-rose-400",
+    Bollywood: "from-orange-500 to-red-600",
+    "Dark Mysterious": "from-zinc-800 to-black",
+    "Luxury Gentleman": "from-amber-700 to-yellow-900",
+    "Soft Girl Energy": "from-pastel-pink to-white",
+    "Shayari Mode": "from-emerald-600 to-teal-800"
+};

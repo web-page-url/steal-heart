@@ -7,6 +7,7 @@ import FloatingHearts from "@/components/FloatingHearts";
 import TrendingLines from "@/components/TrendingLines";
 import Testimonials from "@/components/Testimonials";
 import Pricing from "@/components/Pricing";
+import RizzGallery from "@/components/RizzGallery";
 
 export default function Home() {
   return (
@@ -21,6 +22,7 @@ export default function Home() {
 
       <main>
         <Hero />
+        <RizzGallery />
         <RizzGenerator />
         <TrendingLines />
         <CategoryShowcase />

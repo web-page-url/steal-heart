@@ -16,14 +16,41 @@ export default function AIRizzPage() {
     const [input, setInput] = React.useState("");
     const [messages, setMessages] = React.useState<{ id: number; text: string; sender: "user" | "ai"; time: string }[]>([]);
     const [isGenerating, setIsGenerating] = React.useState(false);
-    const [copiedId, setCopiedId] = React.useState<number | null>(null);
+    const [copiedId, setCopiedId] = React.useState<number | string | null>(null);
+    const [isMounted, setIsMounted] = React.useState(false);
     const scrollRef = React.useRef<HTMLDivElement>(null);
+
+    // Persistence logic
+    React.useEffect(() => {
+        setIsMounted(true);
+        const saved = localStorage.getItem("rizzverse_ai_chats");
+        if (saved) {
+            try {
+                setMessages(JSON.parse(saved));
+            } catch (e) {
+                console.error("Failed to parse rizz chats", e);
+            }
+        }
+    }, []);
+
+    React.useEffect(() => {
+        if (isMounted) {
+            localStorage.setItem("rizzverse_ai_chats", JSON.stringify(messages));
+        }
+    }, [messages, isMounted]);
 
     React.useEffect(() => {
         if (scrollRef.current) {
             scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
         }
     }, [messages, isGenerating]);
+
+    const clearHistory = () => {
+        if (window.confirm("Are you sure you want to clear your Rizz history? This cannot be undone.")) {
+            setMessages([]);
+            localStorage.removeItem("rizzverse_ai_chats");
+        }
+    };
 
     const callGeminiAPI = async (prompt: string): Promise<string> => {
         const GEMINI_API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
@@ -43,11 +70,22 @@ The user needs the perfect, personalized pickup line. They will provide a situat
 
 Tone & Instructions:
 - Respond as a master of charm and social dynamics.
-- Keep responses witty, creative, and highly effective.
-- Provide 2-3 variations: One "Smooth/Romantic", one "Funny/Witty", and one "Bold/Savage".
-- Use emojis effectively ✨, 🔥, 💖, 🪄.
-- Format the output clearly with labels for each style.
-- Keep the language modern and relatable (Gen-Z/Millennial appeal).
+- Provide EXACTLY 3 variations: "Smooth/Romantic", "Funny/Witty", and "Bold/Savage".
+- Use the following EXACT structure for the response so I can parse it:
+
+[STYLE_START: Smooth & Romantic]
+(Pickup line here with emojis)
+[STYLE_END]
+
+[STYLE_START: Funny & Witty]
+(Pickup line here with emojis)
+[STYLE_END]
+
+[STYLE_START: Bold & Savage]
+(Pickup line here with emojis)
+[STYLE_END]
+
+(Optional: Add a legendary master tip at the end starting with "MASTER_TIP: ")
 
 User query: ${prompt}`;
 
@@ -88,10 +126,40 @@ User query: ${prompt}`;
         setIsGenerating(false);
     };
 
-    const handleCopy = (text: string, id: number) => {
+    const handleCopy = (text: string, id: string | number) => {
         navigator.clipboard.writeText(text);
-        setCopiedId(id);
+        setCopiedId(typeof id === 'number' ? id : 999); // Placeholder for sub-ids or just use string
+        if (typeof id === 'string') {
+            // Logic for individual card copy state
+        }
+        setCopiedId(id as any);
         setTimeout(() => setCopiedId(null), 2000);
+    };
+
+    const parseAIResponse = (text: string) => {
+        const variations: { style: string, line: string, icon: any }[] = [];
+        const styles = [
+            { name: "Smooth & Romantic", icon: Heart, color: "text-brand-pink" },
+            { name: "Funny & Witty", icon: Zap, color: "text-brand-gold" },
+            { name: "Bold & Savage", icon: Flame, color: "text-brand-red" }
+        ];
+
+        styles.forEach(style => {
+            const regex = new RegExp(`\\[STYLE_START: ${style.name}\\]([\\s\\S]*?)\\[STYLE_END\\]`, 'i');
+            const match = text.match(regex);
+            if (match && match[1]) {
+                variations.push({
+                    style: style.name,
+                    line: match[1].trim(),
+                    icon: style.icon
+                });
+            }
+        });
+
+        const tipMatch = text.match(/MASTER_TIP:([\s\S]*)$/i);
+        const tip = tipMatch ? tipMatch[1].trim() : null;
+
+        return { variations, tip };
     };
 
     return (
@@ -121,7 +189,7 @@ User query: ${prompt}`;
                     {/* Message Area */}
                     <div
                         ref={scrollRef}
-                        className="flex-1 overflow-y-auto p-6 md:p-10 space-y-8 scrollbar-hide"
+                        className="flex-1 overflow-y-auto p-4 md:p-10 space-y-8 scrollbar-hide"
                     >
                         {messages.length === 0 && (
                             <div className="h-full flex flex-col items-center justify-center text-center opacity-30 select-none">
@@ -132,54 +200,91 @@ User query: ${prompt}`;
                         )}
 
                         <AnimatePresence>
-                            {messages.map((msg) => (
-                                <motion.div
-                                    key={msg.id}
-                                    initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                                    className={cn(
-                                        "flex w-full gap-4",
-                                        msg.sender === "user" ? "flex-row-reverse" : "flex-row"
-                                    )}
-                                >
-                                    <div className={cn(
-                                        "h-10 w-10 shrink-0 rounded-2xl flex items-center justify-center",
-                                        msg.sender === "user" ? "bg-foreground/10 text-foreground" : "bg-brand-pink text-white shadow-lg shadow-brand-pink/20"
-                                    )}>
-                                        {msg.sender === "user" ? <User size={20} /> : <Sparkles size={20} className="fill-current" />}
-                                    </div>
+                            {messages.map((msg) => {
+                                const isAI = msg.sender === "ai";
+                                const parsed = isAI ? parseAIResponse(msg.text) : null;
 
-                                    <div className={cn(
-                                        "max-w-[95%] group",
-                                        msg.sender === "user" ? "text-right" : "text-left"
-                                    )}>
+                                return (
+                                    <motion.div
+                                        key={msg.id}
+                                        initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                                        className={cn(
+                                            "flex w-full gap-4",
+                                            msg.sender === "user" ? "flex-row-reverse" : "flex-row"
+                                        )}
+                                    >
                                         <div className={cn(
-                                            "inline-block rounded-[28px] p-6 md:p-8 text-xl relative",
-                                            msg.sender === "user"
-                                                ? "bg-foreground/5 border border-white/5 text-foreground rounded-tr-none"
-                                                : "bg-white/5 border border-brand-pink/20 text-foreground rounded-tl-none"
+                                            "h-10 w-10 shrink-0 rounded-2xl flex items-center justify-center",
+                                            msg.sender === "user" ? "bg-foreground/10 text-foreground" : "bg-brand-pink text-white shadow-lg shadow-brand-pink/20"
                                         )}>
-                                            <div className="whitespace-pre-wrap leading-relaxed">
-                                                {msg.text}
-                                            </div>
+                                            {msg.sender === "user" ? <User size={20} /> : <Sparkles size={20} className="fill-current" />}
+                                        </div>
 
-                                            {msg.sender === "ai" && (
-                                                <div className="mt-6 pt-6 border-t border-white/5 flex items-center gap-4">
-                                                    <button
-                                                        onClick={() => handleCopy(msg.text, msg.id)}
-                                                        className="text-sm font-black uppercase tracking-widest text-brand-pink hover:text-white transition-colors flex items-center gap-2"
-                                                    >
-                                                        {copiedId === msg.id ? <><Check size={18} /> Copied</> : <><Copy size={18} /> Copy Rizz</>}
-                                                    </button>
+                                        <div className={cn(
+                                            "max-w-[95%] xl:max-w-4xl group",
+                                            msg.sender === "user" ? "text-right" : "text-left"
+                                        )}>
+                                            {isAI && parsed && parsed.variations.length > 0 ? (
+                                                <div className="space-y-4">
+                                                    {parsed.variations.map((v, idx) => (
+                                                        <motion.div
+                                                            key={`${msg.id}-${idx}`}
+                                                            initial={{ opacity: 0, x: -20 }}
+                                                            animate={{ opacity: 1, x: 0 }}
+                                                            transition={{ delay: idx * 0.1 }}
+                                                            className="glass rounded-3xl p-6 md:p-8 border-white/10 bg-white/[0.03] group/card hover:bg-white/[0.05] transition-all relative overflow-hidden"
+                                                        >
+                                                            <div className="absolute top-0 left-0 w-1 h-full bg-brand-pink opacity-50" />
+                                                            <div className="flex items-center gap-3 mb-4">
+                                                                <v.icon size={18} className="text-brand-pink" />
+                                                                <span className="text-[10px] font-black uppercase tracking-widest text-brand-pink">{v.style}</span>
+                                                            </div>
+                                                            <p className="text-xl md:text-2xl font-bold leading-relaxed mb-6 italic">"{v.line}"</p>
+
+                                                            <button
+                                                                onClick={() => handleCopy(v.line, `${msg.id}-${idx}`)}
+                                                                className={cn(
+                                                                    "flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all",
+                                                                    copiedId === `${msg.id}-${idx}`
+                                                                        ? "bg-brand-gold text-black scale-95"
+                                                                        : "bg-brand-pink/10 text-brand-pink hover:bg-brand-pink hover:text-white"
+                                                                )}
+                                                            >
+                                                                {copiedId === `${msg.id}-${idx}` ? <><Check size={14} /> Copied</> : <><Copy size={14} /> Copy Line</>}
+                                                            </button>
+                                                        </motion.div>
+                                                    ))}
+
+                                                    {parsed.tip && (
+                                                        <div className="p-5 rounded-2xl bg-brand-gold/5 border border-brand-gold/20 flex gap-4">
+                                                            <div className="shrink-0 text-brand-gold mt-0.5"><Bot size={20} /></div>
+                                                            <div className="text-sm font-medium text-brand-gold italic">
+                                                                <span className="font-black uppercase tracking-widest mr-2">Guru Tip:</span>
+                                                                {parsed.tip}
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            ) : (
+                                                <div className={cn(
+                                                    "inline-block rounded-[28px] p-6 md:p-8 text-xl relative",
+                                                    msg.sender === "user"
+                                                        ? "bg-foreground/5 border border-white/5 text-foreground rounded-tr-none"
+                                                        : "bg-white/5 border border-brand-pink/20 text-foreground rounded-tl-none"
+                                                )}>
+                                                    <div className="whitespace-pre-wrap leading-relaxed">
+                                                        {msg.text}
+                                                    </div>
                                                 </div>
                                             )}
+                                            <div className="text-[10px] font-bold text-text-muted mt-2 opacity-50 uppercase tracking-widest">
+                                                {msg.time}
+                                            </div>
                                         </div>
-                                        <div className="text-[10px] font-bold text-text-muted mt-2 opacity-50 uppercase tracking-widest">
-                                            {msg.time}
-                                        </div>
-                                    </div>
-                                </motion.div>
-                            ))}
+                                    </motion.div>
+                                );
+                            })}
                         </AnimatePresence>
 
                         {isGenerating && (
@@ -236,13 +341,22 @@ User query: ${prompt}`;
                     </div>
                 </div>
 
-                <div className="mt-8 text-center">
+                <div className="mt-8 text-center flex items-center justify-center gap-8">
                     <button
                         onClick={() => router.push('/')}
                         className="text-xs font-black uppercase tracking-[0.2em] text-text-muted hover:text-foreground transition-colors inline-flex items-center gap-2"
                     >
                         <ArrowLeft size={14} /> Back to Dashboard
                     </button>
+
+                    {messages.length > 0 && (
+                        <button
+                            onClick={clearHistory}
+                            className="text-xs font-black uppercase tracking-[0.2em] text-brand-red/50 hover:text-brand-red transition-colors inline-flex items-center gap-2"
+                        >
+                            <RefreshCw size={14} /> Clear History
+                        </button>
+                    )}
                 </div>
             </main>
 

@@ -1,3 +1,8 @@
+import {
+    Heart, Sparkles, Flame, Smile, Zap, Crown, Ghost,
+    Briefcase, Feather, MessageSquare
+} from "lucide-react";
+
 export type RizzVibe =
     | "Romantic"
     | "Funny"
@@ -14,6 +19,90 @@ export interface RizzLine {
     author?: string;
     vibe: RizzVibe;
 }
+
+export interface CategoryData {
+    slug: string;
+    title: string;
+    desc: string;
+    icon: any;
+    vibe: RizzVibe;
+    preview: string;
+}
+
+export const CATEGORY_DATA: CategoryData[] = [
+    {
+        slug: "romantic-royalty",
+        title: "Romantic Royalty",
+        vibe: "Romantic",
+        icon: Crown,
+        desc: "Classic charm for the pure at heart. These lines are designed to make anyone feel like royalty in your eyes.",
+        preview: "My universe feels incomplete without you."
+    },
+    {
+        slug: "funny-but-smooth",
+        title: "Funny But Smooth",
+        vibe: "Funny",
+        icon: Smile,
+        desc: "Break the ice with a perfect laugh. Charm them with your wit and keep the conversation flowing effortlessly.",
+        preview: "Are you Google? You're all I've been searching for."
+    },
+    {
+        slug: "savage-bold",
+        title: "Savage & Bold",
+        vibe: "Savage",
+        icon: Flame,
+        desc: "High risk, high reward. For when you want to make a statement that's impossible to ignore.",
+        preview: "If looks could kill, you'd be a weapon."
+    },
+    {
+        slug: "cute-innocent",
+        title: "Cute & Innocent",
+        vibe: "Cute",
+        icon: Heart,
+        desc: "Soft words that melt hearts. Perfect for those sweet moments where less is definitely more.",
+        preview: "I must be a snowflake because I've fallen for you."
+    },
+    {
+        slug: "desi-bollywood",
+        title: "Desi Bollywood",
+        vibe: "Bollywood",
+        icon: Zap,
+        desc: "Channel your inner main character with dramatic lines that feel straight out of a blockbuster movie.",
+        preview: "Itni shiddat se maine tumhe paane ki koshish ki hai..."
+    },
+    {
+        slug: "dark-mysterious",
+        title: "Dark & Mysterious",
+        vibe: "Dark Mysterious",
+        icon: Ghost,
+        desc: "Deep, intriguing vibes for those late-night conversations that go beyond the surface.",
+        preview: "The stars are jealous of the light you hide."
+    },
+    {
+        slug: "luxury-ceo-vibes",
+        title: "Luxury CEO Vibes",
+        vibe: "Luxury Gentleman",
+        icon: Briefcase,
+        desc: "Sophisticated charm for the elite. Perfect for making a lasting impression of power and elegance.",
+        preview: "Excellence is a habit, you are the definition."
+    },
+    {
+        slug: "shayari-special",
+        title: "Shayari Special",
+        vibe: "Shayari Mode",
+        icon: Feather,
+        desc: "Poetic depth that touches the soul. Classic Urdu and Hindi influenced lines for deep connection.",
+        preview: "Log kehte hain mohabbat ek bar hoti hai..."
+    },
+    {
+        slug: "insta-dm-openers",
+        title: "Insta DM Openers",
+        vibe: "Savage",
+        icon: MessageSquare,
+        desc: "The perfect hooks for social media. Stand out in their notifications from the very first word.",
+        preview: "Your profile is a masterpiece, can I be the critic?"
+    }
+];
 
 export const RIZZ_LINES: RizzLine[] = [
     // Romantic

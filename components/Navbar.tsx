@@ -13,6 +13,8 @@ const navLinks = [
     { name: "Categories", href: "/categories" },
     { name: "AI Guru", href: "/ai" },
     { name: "AI Rizz Lab", href: "/lab" },
+    { name: "Pricing", href: "/pricing" },
+    { name: "Testimonials", href: "/testimonials" },
     { name: "About", href: "/about" },
 ];
 

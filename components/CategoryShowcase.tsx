@@ -1,83 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Heart, Sparkles, Flame, Smile, Zap, Crown, Ghost, Briefcase, Feather, MessageSquare } from "lucide-react";
-import { RizzVibe } from "@/lib/rizzData";
+import { Zap, Crown } from "lucide-react";
+import { CATEGORY_DATA } from "@/lib/rizzData";
 import Link from "next/link";
-
-interface Category {
-    title: string;
-    vibe: RizzVibe;
-    icon: any;
-    desc: string;
-    preview: string;
-}
-
-const categories: Category[] = [
-    {
-        title: "Romantic Royalty",
-        vibe: "Romantic",
-        icon: Crown,
-        desc: "Classic charm for the pure at heart.",
-        preview: "My universe feels incomplete without you."
-    },
-    {
-        title: "Funny But Smooth",
-        vibe: "Funny",
-        icon: Smile,
-        desc: "Break the ice with a perfect laugh.",
-        preview: "Are you Google? You're all I've been searching for."
-    },
-    {
-        title: "Savage & Bold",
-        vibe: "Savage",
-        icon: Flame,
-        desc: "High risk, high reward. Not for the shy.",
-        preview: "If looks could kill, you'd be a weapon."
-    },
-    {
-        title: "Cute & Innocent",
-        vibe: "Cute",
-        icon: Heart,
-        desc: "Soft words to make them melt slowly.",
-        preview: "I must be a snowflake because I've fallen for you."
-    },
-    {
-        title: "Desi Bollywood",
-        vibe: "Bollywood",
-        icon: Zap,
-        desc: "Dramatic lines for the main character.",
-        preview: "Itni shiddat se maine tumhe paane ki koshish ki hai..."
-    },
-    {
-        title: "Dark & Mysterious",
-        vibe: "Dark Mysterious",
-        icon: Ghost,
-        desc: "Intriguing vibes for late-night talks.",
-        preview: "The stars are jealous of the light you hide."
-    },
-    {
-        title: "Luxury CEO Vibes",
-        vibe: "Luxury Gentleman",
-        icon: Briefcase,
-        desc: "Sophisticated charm for the elite.",
-        preview: "Excellence is a habit, you are the definition."
-    },
-    {
-        title: "Shayari Special",
-        vibe: "Shayari Mode",
-        icon: Feather,
-        desc: "Poetic depth that touches the soul.",
-        preview: "Log kehte hain mohabbat ek bar hoti hai..."
-    },
-    {
-        title: "Insta DM Openers",
-        vibe: "Savage",
-        icon: MessageSquare,
-        desc: "Hook them from the very first notification.",
-        preview: "Your profile is a masterpiece, can I be the critic?"
-    }
-];
 
 export default function CategoryShowcase() {
     return (
@@ -96,10 +22,10 @@ export default function CategoryShowcase() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {categories.map((cat, i) => (
+                    {CATEGORY_DATA.map((cat: any, i: number) => (
                         <Link
                             key={cat.title}
-                            href={`/categories/${cat.title.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-')}`}
+                            href={`/categories/${cat.slug}`}
                             className="block"
                         >
                             <motion.div

@@ -2,81 +2,11 @@
 
 import { motion } from "framer-motion";
 import { useParams, useRouter } from "next/navigation";
-import {
-    Heart, Sparkles, Flame, Smile, Zap, Crown, Ghost,
-    Briefcase, Feather, MessageSquare, ArrowLeft,
-    Copy, Check, Share2
-} from "lucide-react";
-import { useState, useEffect } from "react";
+import { Heart, Sparkles, Crown, ArrowLeft, Copy, Check, Share2 } from "lucide-react";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
-import { RIZZ_LINES } from "@/lib/rizzData";
-
-const categories = [
-    {
-        slug: "romantic-royalty",
-        title: "Romantic Royalty",
-        icon: Crown,
-        desc: "Classic charm for the pure at heart. These lines are designed to make anyone feel like royalty in your eyes.",
-        vibe: "Romantic"
-    },
-    {
-        slug: "funny-but-smooth",
-        title: "Funny But Smooth",
-        icon: Smile,
-        desc: "Break the ice with a perfect laugh. Charm them with your wit and keep the conversation flowing effortlessly.",
-        vibe: "Funny"
-    },
-    {
-        slug: "savage-bold",
-        title: "Savage & Bold",
-        icon: Flame,
-        desc: "High risk, high reward. For when you want to make a statement that's impossible to ignore.",
-        vibe: "Savage"
-    },
-    {
-        slug: "cute-innocent",
-        title: "Cute & Innocent",
-        icon: Heart,
-        desc: "Soft words that melt hearts. Perfect for those sweet moments where less is definitely more.",
-        vibe: "Cute"
-    },
-    {
-        slug: "desi-bollywood",
-        title: "Desi Bollywood",
-        icon: Zap,
-        desc: "Channel your inner main character with dramatic lines that feel straight out of a block-buster movie.",
-        vibe: "Bollywood"
-    },
-    {
-        slug: "dark-mysterious",
-        title: "Dark & Mysterious",
-        icon: Ghost,
-        desc: "Deep, intriguing vibes for those late-night conversations that go beyond the surface.",
-        vibe: "Dark Mysterious"
-    },
-    {
-        slug: "luxury-ceo-vibes",
-        title: "Luxury CEO Vibes",
-        icon: Briefcase,
-        desc: "Sophisticated charm for the elite. Perfect for making a lasting impression of power and elegance.",
-        vibe: "Luxury Gentleman"
-    },
-    {
-        slug: "shayari-special",
-        title: "Shayari Special",
-        icon: Feather,
-        desc: "Poetic depth that touches the soul. Classic Urdu and Hindi influenced lines for deep connection.",
-        vibe: "Shayari Mode"
-    },
-    {
-        slug: "insta-dm-openers",
-        title: "Insta DM Openers",
-        icon: MessageSquare,
-        desc: "The perfect hooks for social media. Stand out in their notifications from the very first word.",
-        vibe: "Savage"
-    }
-];
+import { RIZZ_LINES, CATEGORY_DATA, CategoryData } from "@/lib/rizzData";
 
 export default function CategoryPage() {
     const params = useParams();
@@ -84,10 +14,9 @@ export default function CategoryPage() {
     const slug = params.slug as string;
     const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
 
-    const category = categories.find(c => c.slug === slug);
+    const category = CATEGORY_DATA.find((c: CategoryData) => c.slug === slug);
 
     // Filter rizz lines for this category
-    // For Insta DM, we use 'Savage' or 'Funny' as fallback if not explicitly defined
     const lines = category
         ? RIZZ_LINES.filter(l => l.vibe === category.vibe || (category.slug === 'insta-dm-openers' && (l.vibe === 'Savage' || l.vibe === 'Funny')))
         : [];
@@ -138,7 +67,7 @@ export default function CategoryPage() {
                         </div>
 
                         <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tighter">
-                            {category.title.split(' ').map((word, i) => (
+                            {category.title.split(' ').map((word: string, i: number) => (
                                 <span key={i} className={i % 2 !== 0 ? "text-gradient" : ""}>
                                     {word}{' '}
                                 </span>
@@ -151,7 +80,7 @@ export default function CategoryPage() {
 
                     {/* Rizz List */}
                     <div className="space-y-6">
-                        {lines.map((line, i) => (
+                        {lines.map((line: any, i: number) => (
                             <motion.div
                                 key={i}
                                 initial={{ opacity: 0, x: -20 }}

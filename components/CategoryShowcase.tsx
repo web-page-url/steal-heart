@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Heart, Sparkles, Flame, Smile, Zap, Crown, Ghost, Briefcase, Feather, MessageSquare } from "lucide-react";
 import { RizzVibe } from "@/lib/rizzData";
+import Link from "next/link";
 
 interface Category {
     title: string;
@@ -96,41 +97,46 @@ export default function CategoryShowcase() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {categories.map((cat, i) => (
-                        <motion.div
+                        <Link
                             key={cat.title}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ delay: i * 0.1 }}
-                            whileHover={{
-                                y: -10,
-                                boxShadow: "0 20px 40px rgba(0,0,0,0.5)",
-                                borderColor: "rgba(255,105,180,0.3)"
-                            }}
-                            className="group relative glass rounded-[32px] p-8 cursor-pointer transition-all border-white/5"
+                            href={`/categories/${cat.title.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-')}`}
+                            className="block"
                         >
-                            <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-20 transition-opacity">
-                                <cat.icon size={80} />
-                            </div>
-
-                            <div className="mb-6 inline-flex p-4 rounded-2xl bg-gradient-to-br from-white/10 to-transparent border border-white/10 text-brand-pink group-hover:scale-110 transition-transform">
-                                <cat.icon size={28} />
-                            </div>
-
-                            <h3 className="text-2xl font-bold text-foreground mb-2">{cat.title}</h3>
-                            <p className="text-text-muted text-sm mb-6 leading-relaxed">{cat.desc}</p>
-
-                            <div className="mt-auto">
-                                <div className="p-4 rounded-xl bg-foreground/5 border border-foreground/5 italic text-text-muted text-xs">
-                                    "{cat.preview}"
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ delay: i * 0.1 }}
+                                whileHover={{
+                                    y: -10,
+                                    boxShadow: "0 20px 40px rgba(0,0,0,0.5)",
+                                    borderColor: "rgba(255,105,180,0.3)"
+                                }}
+                                className="group relative glass rounded-[32px] p-8 cursor-pointer transition-all border-white/5 h-full"
+                            >
+                                <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-20 transition-opacity">
+                                    <cat.icon size={80} />
                                 </div>
-                            </div>
 
-                            <div className="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-pink text-white">
-                                    <Zap size={20} fill="currentColor" />
+                                <div className="mb-6 inline-flex p-4 rounded-2xl bg-gradient-to-br from-white/10 to-transparent border border-white/10 text-brand-pink group-hover:scale-110 transition-transform">
+                                    <cat.icon size={28} />
                                 </div>
-                            </div>
-                        </motion.div>
+
+                                <h3 className="text-2xl font-bold text-foreground mb-2">{cat.title}</h3>
+                                <p className="text-text-muted text-sm mb-6 leading-relaxed">{cat.desc}</p>
+
+                                <div className="mt-auto">
+                                    <div className="p-4 rounded-xl bg-foreground/5 border border-foreground/5 italic text-text-muted text-xs">
+                                        "{cat.preview}"
+                                    </div>
+                                </div>
+
+                                <div className="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-pink text-white">
+                                        <Zap size={20} fill="currentColor" />
+                                    </div>
+                                </div>
+                            </motion.div>
+                        </Link>
                     ))}
                 </div>
             </div>

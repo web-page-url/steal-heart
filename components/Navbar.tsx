@@ -5,13 +5,15 @@ import { Heart, Menu, X, Sun, Moon, Palette } from "lucide-react";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "./ThemeProvider";
+import Link from "next/link";
 
 const navLinks = [
-    { name: "Home", href: "#" },
-    { name: "Generate Rizz", href: "#generate" },
-    { name: "Categories", href: "#categories" },
-    { name: "AI Rizz Lab", href: "#lab" },
-    { name: "About", href: "#about" },
+    { name: "Home", href: "/" },
+    { name: "Generate Rizz", href: "/#generate" },
+    { name: "Categories", href: "/categories" },
+    { name: "AI Guru", href: "/ai" },
+    { name: "AI Rizz Lab", href: "/lab" },
+    { name: "About", href: "/about" },
 ];
 
 export default function Navbar() {
@@ -42,7 +44,7 @@ export default function Navbar() {
                     isScrolled ? "shadow-lg shadow-brand-pink/5" : ""
                 )}
             >
-                <div className="flex items-center gap-2 group cursor-pointer">
+                <Link href="/" className="flex items-center gap-2 group cursor-pointer">
                     <motion.div
                         whileHover={{ scale: 1.2, rotate: 15 }}
                         className="text-brand-pink"
@@ -57,18 +59,18 @@ export default function Navbar() {
                             Where Words Steal Hearts
                         </span>
                     </div>
-                </div>
+                </Link>
 
                 {/* Desktop Links */}
                 <div className="hidden md:flex items-center gap-8">
                     {navLinks.map((link) => (
-                        <a
+                        <Link
                             key={link.name}
                             href={link.href}
                             className="text-sm font-medium text-zinc-400 hover:text-foreground transition-colors capitalize tracking-wide"
                         >
                             {link.name}
-                        </a>
+                        </Link>
                     ))}
                 </div>
 
@@ -108,14 +110,14 @@ export default function Navbar() {
                     className="absolute top-24 left-[5%] right-[5%] glass rounded-3xl p-8 flex flex-col gap-6 md:hidden z-40"
                 >
                     {navLinks.map((link) => (
-                        <a
+                        <Link
                             key={link.name}
                             href={link.href}
                             onClick={() => setIsOpen(false)}
                             className="text-xl font-medium text-white text-center"
                         >
                             {link.name}
-                        </a>
+                        </Link>
                     ))}
                     <button className="w-full rounded-full bg-gradient-to-r from-brand-red to-brand-pink py-4 text-lg font-bold text-white">
                         Generate Now

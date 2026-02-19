@@ -100,9 +100,13 @@ export default function AiRizzLab() {
                                     <select
                                         value={selectedPlatform}
                                         onChange={(e) => setSelectedPlatform(e.target.value)}
-                                        className="w-full bg-foreground/5 border border-foreground/10 rounded-2xl px-6 py-4 text-foreground focus:outline-none focus:ring-2 focus:ring-brand-pink"
+                                        className="w-full bg-zinc-900 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-brand-pink cursor-pointer [color-scheme:dark]"
                                     >
-                                        {platforms.map(p => <option key={p} value={p}>{p}</option>)}
+                                        {platforms.map(p => (
+                                            <option key={p} value={p} className="bg-zinc-900 text-white">
+                                                {p}
+                                            </option>
+                                        ))}
                                     </select>
                                 </div>
                             </div>

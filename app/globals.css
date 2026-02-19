@@ -53,6 +53,7 @@
 
   --overlay-opacity: 0.6;
   --hero-vignette: rgba(0, 0, 0, 0.8);
+  color-scheme: dark;
 }
 
 [data-theme='love'] {
@@ -73,6 +74,7 @@
 
   --overlay-opacity: 0.1;
   --hero-vignette: rgba(255, 105, 180, 0.1);
+  color-scheme: light;
 }
 
 body {

@@ -2,9 +2,10 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { Copy, Share2, Sparkles, Heart, RefreshCw } from "lucide-react";
+import { Copy, Share2, Sparkles, Heart, RefreshCw, Loader2 } from "lucide-react";
 import { RIZZ_LINES, RizzVibe, VIBE_COLORS } from "@/lib/rizzData";
 import { cn } from "@/lib/utils";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const vibes: RizzVibe[] = [
     "Romantic", "Funny", "Savage", "Cute", "Bollywood",
@@ -18,26 +19,43 @@ export default function RizzGenerator() {
     const [isGenerating, setIsGenerating] = useState(false);
     const [copied, setCopied] = useState(false);
 
-    const generateRizz = () => {
+    const generateRizz = async () => {
+        if (!name.trim()) {
+            alert("Please provide a name for the mission, Agent.");
+            return;
+        }
+
         setIsGenerating(true);
-        // Simulate AI thinking
-        setTimeout(() => {
-            const filtered = RIZZ_LINES.filter(line => line.vibe === vibe);
-            const randomLine = filtered[Math.floor(Math.random() * filtered.length)];
-            let text = randomLine.text;
+        setGeneratedLine("");
 
-            if (name.trim()) {
-                // Inject name if possible
-                if (text.includes("you")) {
-                    text = text.replace("you", name);
-                } else {
-                    text = `${name}, ${text.charAt(0).toLowerCase() + text.slice(1)}`;
-                }
-            }
-
-            setGeneratedLine(text);
+        const GEMINI_API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+        if (!GEMINI_API_KEY) {
+            setGeneratedLine("Rizz Server Offline: API Key Missing.");
             setIsGenerating(false);
-        }, 1200);
+            return;
+        }
+
+        try {
+            const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+            const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+
+            const prompt = `Act as a master of charm and social dynamics. 
+            Target Name: ${name}
+            Vibe Requested: ${vibe}
+            
+            Generate ONE highly effective, personalized pickup line or opener for ${name}. 
+            Make it match the "${vibe}" vibe perfectly. 
+            Response format: JUST the line, no other text. Include relevant emojis.`;
+
+            const res = await model.generateContent(prompt);
+            const text = await res.response.text();
+            setGeneratedLine(text.trim());
+        } catch (error) {
+            console.error(error);
+            setGeneratedLine("The Rizz algorithms are experiencing interference. Try again.");
+        } finally {
+            setIsGenerating(false);
+        }
     };
 
     const copyToClipboard = () => {
@@ -111,7 +129,7 @@ export default function RizzGenerator() {
                                 className="w-full mt-4 flex items-center justify-center gap-3 bg-white text-black font-black py-5 rounded-2xl text-xl hover:bg-brand-pink hover:text-white transition-all shadow-xl shadow-brand-pink/10 disabled:opacity-50"
                             >
                                 {isGenerating ? (
-                                    <RefreshCw className="h-6 w-6 animate-spin" />
+                                    <Loader2 className="h-6 w-6 animate-spin" />
                                 ) : (
                                     <>Unleash Rizz <Sparkles className="h-5 w-5 fill-current" /></>
                                 )}

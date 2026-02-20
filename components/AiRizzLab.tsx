@@ -2,8 +2,9 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { Microscope, Sliders, Target, ShieldCheck, Sparkles, Brain } from "lucide-react";
+import { Microscope, Sliders, Target, ShieldCheck, Sparkles, Brain, Copy, Check, Loader2, RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const personalityTypes = [
     "Introvert", "Extrovert", "Intellectual", "Fashion Queen", "Gym Freak", "Gamer", "Artist"
@@ -17,6 +18,54 @@ export default function AiRizzLab() {
     const [intensity, setIntensity] = useState(50);
     const [selectedType, setSelectedType] = useState("Extrovert");
     const [selectedPlatform, setSelectedPlatform] = useState("Instagram");
+    const [isGenerating, setIsGenerating] = useState(false);
+    const [result, setResult] = useState<string | null>(null);
+    const [copied, setCopied] = useState(false);
+
+    const handleCalibrate = async () => {
+        if (isGenerating) return;
+        setIsGenerating(true);
+        setResult(null);
+
+        const GEMINI_API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+        if (!GEMINI_API_KEY) {
+            setResult("Rizz Server Offline: API Key Missing.");
+            setIsGenerating(false);
+            return;
+        }
+
+        try {
+            const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+            const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+
+            const intensityLabel = intensity < 30 ? "Soft & Subtle" : intensity < 70 ? "Bold & Flirty" : "Nuclear/Savage";
+
+            const prompt = `Act as a master of charisma and rizz. 
+            Target Personality: ${selectedType}
+            Platform: ${selectedPlatform}
+            Intensity: ${intensity}% (${intensityLabel})
+            
+            Generate ONE highly effective, context-aware pickup line or opener. 
+            Make it feel natural for the platform and personality.
+            Response format: JUST the line, no other text.`;
+
+            const res = await model.generateContent(prompt);
+            const text = await res.response.text();
+            setResult(text.trim());
+        } catch (error) {
+            console.error(error);
+            setResult("Neural Link Interrupted. Try again.");
+        } finally {
+            setIsGenerating(false);
+        }
+    };
+
+    const handleCopy = () => {
+        if (!result) return;
+        navigator.clipboard.writeText(result);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    };
 
     return (
         <section id="lab" className="py-24 px-4 relative overflow-hidden">
@@ -26,7 +75,7 @@ export default function AiRizzLab() {
             </div>
 
             <div className="mx-auto max-w-6xl">
-                <div className="glass rounded-[48px] p-8 md:p-16 border-white/10 relative">
+                <div className="glass rounded-[32px] md:rounded-[48px] p-6 md:p-16 border-white/10 relative">
                     <div className="flex flex-col lg:flex-row gap-16">
                         {/* Left: Lab Controls */}
                         <div className="flex-1">
@@ -113,31 +162,95 @@ export default function AiRizzLab() {
                         </div>
 
                         {/* Right: Lab Output / Visualization */}
-                        <div className="flex-1 flex flex-col items-center justify-center p-8 bg-foreground/5 rounded-[32px] border border-foreground/5 min-h-[400px]">
-                            <motion.div
-                                animate={{ scale: [1, 1.05, 1], opacity: [0.5, 1, 0.5] }}
-                                transition={{ duration: 4, repeat: Infinity }}
-                                className="relative mb-8"
-                            >
-                                <div className="absolute -inset-8 bg-brand-pink/20 blur-3xl rounded-full" />
-                                <Microscope size={80} className="text-brand-pink relative z-10" />
-                            </motion.div>
+                        <div className="flex-1 flex flex-col items-center justify-center p-4 md:p-8 bg-foreground/5 rounded-[32px] md:rounded-[40px] border border-white/5 min-h-[400px] md:min-h-[500px] relative overflow-hidden">
+                            <div className="text-center w-full px-2 md:px-6">
+                                {result ? (
+                                    <motion.div
+                                        key="result-card"
+                                        initial={{ opacity: 0, scale: 0.9, rotate: 0 }}
+                                        animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                                        className="space-y-6"
+                                    >
+                                        <div className="p-5 md:p-8 glass rounded-[24px] md:rounded-[32px] border-brand-pink/30 bg-brand-pink/[0.03] relative overflow-hidden group/result">
+                                            <div className="absolute top-0 left-0 w-1 h-full bg-brand-pink" />
+                                            <p className="text-lg md:text-2xl font-bold leading-relaxed italic text-foreground">
+                                                "{result}"
+                                            </p>
+                                        </div>
 
-                            <div className="text-center">
-                                <h3 className="text-2xl font-bold text-foreground mb-2 uppercase tracking-tight">Calibrating...</h3>
-                                <p className="text-zinc-500 text-sm max-w-xs mx-auto mb-8">
-                                    Combining {selectedType} dynamics with {selectedPlatform} algorithms at {intensity}% intensity.
-                                </p>
+                                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                                            <button
+                                                onClick={handleCopy}
+                                                className={cn(
+                                                    "w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-xs transition-all",
+                                                    copied
+                                                        ? "bg-brand-gold text-black scale-95"
+                                                        : "bg-white/10 text-white hover:bg-white/20 border border-white/10"
+                                                )}
+                                            >
+                                                {copied ? <><Check size={16} /> Copied</> : <><Copy size={16} /> Copy Rizz</>}
+                                            </button>
+                                            <button
+                                                onClick={handleCalibrate}
+                                                disabled={isGenerating}
+                                                className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-brand-pink text-white font-black uppercase tracking-widest text-xs hover:bg-brand-red transition-all shadow-xl shadow-brand-pink/20"
+                                            >
+                                                {isGenerating ? <Loader2 size={16} className="animate-spin" /> : <RefreshCw size={16} />}
+                                                Recalibrate
+                                            </button>
+                                        </div>
+                                    </motion.div>
+                                ) : (
+                                    <>
+                                        <motion.div
+                                            key="loading-state"
+                                            animate={isGenerating ? {
+                                                scale: [1, 1.2, 1],
+                                                rotate: [0, 180, 360],
+                                            } : {
+                                                scale: [1, 1.05, 1],
+                                                opacity: [0.5, 1, 0.5]
+                                            }}
+                                            transition={{ duration: isGenerating ? 2 : 4, repeat: Infinity }}
+                                            className="relative mb-8"
+                                        >
+                                            <div className="absolute -inset-8 bg-brand-pink/20 blur-3xl rounded-full" />
+                                            {isGenerating ? (
+                                                <Brain size={80} className="text-brand-pink relative z-10" />
+                                            ) : (
+                                                <Microscope size={80} className="text-brand-pink relative z-10" />
+                                            )}
+                                        </motion.div>
+
+                                        <div className="text-center">
+                                            <h3 className="text-2xl font-bold text-foreground mb-2 uppercase tracking-tight">
+                                                {isGenerating ? "Analyzing Dynamics..." : "Ready to Calibrate"}
+                                            </h3>
+                                            <p className="text-zinc-500 text-sm max-w-xs mx-auto mb-8">
+                                                {isGenerating
+                                                    ? "Scanning neural patterns and platform algorithms..."
+                                                    : `Combining ${selectedType} dynamics with ${selectedPlatform} algorithms at ${intensity}% intensity.`
+                                                }
+                                            </p>
+                                        </div>
+
+                                        <motion.button
+                                            whileHover={{ scale: 1.05 }}
+                                            whileTap={{ scale: 0.95 }}
+                                            onClick={handleCalibrate}
+                                            disabled={isGenerating}
+                                            className="group relative flex items-center gap-3 overflow-hidden rounded-full bg-brand-pink px-12 py-5 text-xl font-black text-white transition-all shadow-xl shadow-brand-pink/20 disabled:opacity-50"
+                                        >
+                                            {isGenerating ? (
+                                                <Loader2 className="h-5 w-5 animate-spin" />
+                                            ) : (
+                                                <Sparkles className="h-5 w-5" />
+                                            )}
+                                            {isGenerating ? "Processing..." : "Calibrate Chemistry"}
+                                        </motion.button>
+                                    </>
+                                )}
                             </div>
-
-                            <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                className="group relative flex items-center gap-3 overflow-hidden rounded-full bg-brand-pink px-12 py-5 text-xl font-black text-white transition-all shadow-xl shadow-brand-pink/20"
-                            >
-                                <Sparkles className="h-5 w-5" />
-                                Calibrate Chemistry
-                            </motion.button>
                         </div>
                     </div>
                 </div>

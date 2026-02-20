@@ -4,12 +4,13 @@ import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
     Send, ArrowLeft, Sparkles, User, Bot,
-    Copy, Check, RefreshCw, Heart, Zap, Flame
+    Copy, Check, RefreshCw, Heart, Zap, Flame, Volume2, VolumeX, Pause, Play, Square
 } from "lucide-react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import Navbar from "@/components/Navbar";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { useVoice } from "@/hooks/useVoice";
 
 export default function AIRizzPage() {
     const router = useRouter();
@@ -17,6 +18,7 @@ export default function AIRizzPage() {
     const [messages, setMessages] = React.useState<{ id: number; text: string; sender: "user" | "ai"; time: string }[]>([]);
     const [isGenerating, setIsGenerating] = React.useState(false);
     const [copiedId, setCopiedId] = React.useState<number | string | null>(null);
+    const { speak, isSpeaking, stop } = useVoice();
     const [isMounted, setIsMounted] = React.useState(false);
     const scrollRef = React.useRef<HTMLDivElement>(null);
 
@@ -242,17 +244,30 @@ User query: ${prompt}`;
                                                             </div>
                                                             <p className="text-xl md:text-2xl font-bold leading-relaxed mb-6 italic">"{v.line}"</p>
 
-                                                            <button
-                                                                onClick={() => handleCopy(v.line, `${msg.id}-${idx}`)}
-                                                                className={cn(
-                                                                    "flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all",
-                                                                    copiedId === `${msg.id}-${idx}`
-                                                                        ? "bg-brand-gold text-black scale-95"
-                                                                        : "bg-brand-pink/10 text-brand-pink hover:bg-brand-pink hover:text-white"
-                                                                )}
-                                                            >
-                                                                {copiedId === `${msg.id}-${idx}` ? <><Check size={14} /> Copied</> : <><Copy size={14} /> Copy Line</>}
-                                                            </button>
+                                                            <div className="flex items-center gap-3">
+                                                                <button
+                                                                    onClick={() => handleCopy(v.line, `${msg.id}-${idx}`)}
+                                                                    className={cn(
+                                                                        "flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all",
+                                                                        copiedId === `${msg.id}-${idx}`
+                                                                            ? "bg-brand-gold text-black scale-95"
+                                                                            : "bg-brand-pink/10 text-brand-pink hover:bg-brand-pink hover:text-white"
+                                                                    )}
+                                                                >
+                                                                    {copiedId === `${msg.id}-${idx}` ? <><Check size={14} /> Copied</> : <><Copy size={14} /> Copy Line</>}
+                                                                </button>
+                                                                <button
+                                                                    onClick={() => speak(v.line, `${msg.id}-${idx}`)}
+                                                                    className={cn(
+                                                                        "flex items-center justify-center p-2.5 rounded-xl border transition-all",
+                                                                        isSpeaking === `${msg.id}-${idx}`
+                                                                            ? "bg-brand-pink text-white border-brand-pink shadow-lg translate-y-0.5"
+                                                                            : "bg-white/5 border-white/10 text-brand-pink hover:bg-white/10"
+                                                                    )}
+                                                                >
+                                                                    {isSpeaking === `${msg.id}-${idx}` ? <Square size={16} /> : <Volume2 size={16} />}
+                                                                </button>
+                                                            </div>
                                                         </motion.div>
                                                     ))}
 

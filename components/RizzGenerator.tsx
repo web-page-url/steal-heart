@@ -2,10 +2,11 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { Copy, Share2, Sparkles, Heart, RefreshCw, Loader2 } from "lucide-react";
+import { Copy, Share2, Sparkles, Heart, RefreshCw, Loader2, Volume2, Square } from "lucide-react";
 import { RIZZ_LINES, RizzVibe, VIBE_COLORS } from "@/lib/rizzData";
 import { cn } from "@/lib/utils";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { useVoice } from "@/hooks/useVoice";
 
 const vibes: RizzVibe[] = [
     "Romantic", "Funny", "Savage", "Cute", "Bollywood",
@@ -18,6 +19,7 @@ export default function RizzGenerator() {
     const [generatedLine, setGeneratedLine] = useState("");
     const [isGenerating, setIsGenerating] = useState(false);
     const [copied, setCopied] = useState(false);
+    const { speak, isSpeaking, stop } = useVoice();
 
     const generateRizz = async () => {
         if (!name.trim()) {
@@ -160,6 +162,16 @@ export default function RizzGenerator() {
                                                 className="flex items-center gap-2 text-sm font-bold text-brand-pink hover:text-white transition-colors"
                                             >
                                                 <Copy size={16} /> {copied ? "Copied!" : "Copy"}
+                                            </button>
+                                            <button
+                                                onClick={() => speak(generatedLine, "generator-result")}
+                                                className={cn(
+                                                    "flex items-center gap-2 text-sm font-bold transition-all",
+                                                    isSpeaking === "generator-result" ? "text-white" : "text-brand-gold hover:text-white"
+                                                )}
+                                            >
+                                                {isSpeaking === "generator-result" ? <Square size={16} /> : <Volume2 size={16} />}
+                                                {isSpeaking === "generator-result" ? "Stop" : "Listen"}
                                             </button>
                                             <button className="flex items-center gap-2 text-sm font-bold text-text-muted hover:text-foreground transition-colors">
                                                 <Share2 size={16} /> Share

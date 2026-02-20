@@ -2,9 +2,10 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { Microscope, Sliders, Target, ShieldCheck, Sparkles, Brain, Copy, Check, Loader2, RefreshCw } from "lucide-react";
+import { Microscope, Sliders, Target, ShieldCheck, Sparkles, Brain, Copy, Check, Loader2, RefreshCw, Volume2, Square } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { useVoice } from "@/hooks/useVoice";
 
 const personalityTypes = [
     "Introvert", "Extrovert", "Intellectual", "Fashion Queen", "Gym Freak", "Gamer", "Artist"
@@ -21,6 +22,7 @@ export default function AiRizzLab() {
     const [isGenerating, setIsGenerating] = useState(false);
     const [result, setResult] = useState<string | null>(null);
     const [copied, setCopied] = useState(false);
+    const { speak, isSpeaking, stop } = useVoice();
 
     const handleCalibrate = async () => {
         if (isGenerating) return;
@@ -189,6 +191,17 @@ export default function AiRizzLab() {
                                                 )}
                                             >
                                                 {copied ? <><Check size={16} /> Copied</> : <><Copy size={16} /> Copy Rizz</>}
+                                            </button>
+                                            <button
+                                                onClick={() => speak(result, "lab-result")}
+                                                className={cn(
+                                                    "w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-xs transition-all border",
+                                                    isSpeaking === "lab-result"
+                                                        ? "bg-brand-pink text-white border-brand-pink shadow-lg translate-y-0.5"
+                                                        : "bg-white/5 text-brand-pink border-white/10 hover:bg-white/10"
+                                                )}
+                                            >
+                                                {isSpeaking === "lab-result" ? <><Square size={16} /> Stop</> : <><Volume2 size={16} /> Listen</>}
                                             </button>
                                             <button
                                                 onClick={handleCalibrate}
